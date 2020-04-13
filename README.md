@@ -30,7 +30,7 @@
  
  7.数据库是mysql,版本需要大于5.5,否则会有冲突无法导入sql文件
  
- 8.![oss购买地址,几块钱](https://www.aliyun.com/minisite/goods?userCode=ztot6i1n)
+ 8.[oss购买地址,几块钱](https://www.aliyun.com/minisite/goods?userCode=ztot6i1n)
  
 ### 程序本身的一些功能
  1.发布帖子
