@@ -16,6 +16,8 @@
  2.后台(springBoot+mybatis+mysql)
  
 ### 如何使用
+ * ## 工具(IDEA(maven),tomcat,mysql(5.6以上)使用maven下载依赖以后方可启动,默认使用外置tomcat,不懂设置就默认启动就行)
+
  1.打开前台代码先修改app.js去配置服务器地址和oss的地址(用于展示图片)
  
  2.打开前台util/config.js配置阿里云oss(如果有自己需求可以直接在后台增加上传的代码)
@@ -30,7 +32,7 @@
  
  7.数据库是mysql,版本需要大于5.5,否则会有冲突无法导入sql文件
  
- 8.[oss购买地址,几块钱](https://www.aliyun.com/minisite/goods?userCode=ztot6i1n)
+ 8.[oss购买地址,几块钱](https://www.aliyun.com/minisite/goods?userCode=ztot6i1n),创建bucket,请将bucket默认权限改为公共读写,否则外界无法访问
  
 ### 程序本身的一些功能
  1.发布帖子
