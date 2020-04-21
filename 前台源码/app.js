@@ -4,8 +4,7 @@ App({
   globalData: {
     share: false, // 分享默认为false
     height: 0,
-    // url: "http://127.0.0.1",
-    // url: "这里是你的后台域名，为了安全起见，后台地址不暴露了,地址最后面不加斜杠",
+    url: "这里是你的后台tomcat或者公网地址，地址最后面不加斜杠",
     imageUrl: "https://*.oss-cn-huhehaote.aliyuncs.com/",//这是你的oss地址,用来展示图片,后面加斜杠
     userId: -1,
     userInfo: {},
