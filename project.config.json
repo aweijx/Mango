@@ -24,14 +24,14 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
+		"bundle": true,
 		"useCompilerModule": true,
-		"userConfirmedUseCompilerModuleSwitch": false,
-		"bundle": true
+		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.8.0",
-	"appid": "wxe0bc4659bcdffd95",
-	"projectname": "%E8%8A%92%E6%9E%9CNew%20Life",
+	"appid": "wx12063e8256b4e57f",
+	"projectname": "test1",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

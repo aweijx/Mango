@@ -10,6 +10,7 @@ Page({
       title: '我的', //导航栏 中间的标题
       height: 0
     },
+
     userId: "-1",
     message: {},
     userInfo: {},
@@ -114,9 +115,10 @@ Page({
         // 获取登录的临时凭证
         var code = res.code;
         // 调用后端，获取微信的session_key, secret
+        //var d = that.globalData;
         wx.request({
-          url: getApp().globalData.url + "/Login?code=" + code,
-          method: "POST",
+          url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + 'wx12063e8256b4e57f' + '&secret=' + 'def506697c00c52eee357a377cf0f440' + '&js_code=' + code + '&grant_type=authorization_code',
+          method: "GET",
           data: JSON.stringify(listMessage),
           dataType: JSON,
           success: function(result) {
@@ -141,11 +143,8 @@ Page({
               key: 'userInfo',
               data: list,
             })
-
             getApp().globalData.userId = that.data.message.userId
-
             getApp().globalData.userInfo = list
-
 
             if (that.data.message.code === 200) {
               wx.showModal({
@@ -179,12 +178,12 @@ Page({
   attention() {
     wx.showModal({
       title: '提示',
-      content: '公众号名称  芒果微校园',
+      content: '公众号名称  云大妙妙屋',
       confirmText: "复制",
       showCancel: false,
       success: function() {
         wx.setClipboardData({
-          data: '芒果微校园',
+          data: '云大妙妙屋',
         })
       }
     })

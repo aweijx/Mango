@@ -20,7 +20,7 @@ Page({
     img_url: [],
     hideAdd: false,
     array: [],
-    category_index: null,
+    category_index:  null,
 
     input_intro: "",
     input_phone: "",
@@ -242,7 +242,7 @@ Page({
       })
       return;
     }
-    if (new Number(that.data.input_level) < 14 || new Number(that.data.input_level) > 19) {
+    if (new Number(that.data.input_level) < 14 || new Number(that.data.input_level) > 20) {
       wx.showModal({
         title: '提示',
         content: '年级不对噢~',

@@ -1,12 +1,12 @@
 //app.js
 App({
-
+//
   globalData: {
     share: false, // 分享默认为false
     height: 0,
-    url: "http://122.51.230.42",
-    imageUrl: "https://*.oss-cn-huhehaote.aliyuncs.com/",//这是你的oss地址,用来展示图片,后面加斜杠
-    userId: -1,
+    url: "http://124.70.144.48",
+    imageUrl: "https://124.70.144.48:8080/",//这是你的oss地址,用来展示图片,后面加斜杠
+    userId: "-1",
     userInfo: {},
     userIsAdmin: -1,
     shopMessage: [],
@@ -15,7 +15,7 @@ App({
     noticeMessage: [],
     messageDetail: [],
     isUpdate: -1,
-
+    testoutput:"no",
   },
   onLaunch: function (options) {
 
@@ -61,44 +61,44 @@ App({
     /**
      * 获取商店
      */
-    wx.getStorage({
-      key: 'shopMessage',
-      success: function (res) {
-        that.globalData.shopMessage = res.data
-        if (that.globalData.shopMessage.length != res.data.length) {
-          wx.request({
-            url: that.globalData.url + '/getMessage/getAllShop',
-            method: "post",
-            success: function (e) {
-              that.globalData.shopMessage = e.data
-              wx.setStorage({
-                key: 'shopMessage',
-                data: e.data,
-              })
-            }
-          })
-        }
-      },
-      fail: function () {
-        wx.request({
-          url: that.globalData.url + '/getMessage/getAllShop',
-          method: "post",
-          success: function (e) {
-            that.globalData.shopMessage = e.data
-            wx.setStorage({
-              key: 'shopMessage',
-              data: e.data,
-            })
-          }
-        })
-      }
-    })
+    // wx.getStorage({
+    //   key: 'shopMessage',
+    //   success: function (res) {
+    //     that.globalData.shopMessage = res.data
+    //     if (that.globalData.shopMessage.length != res.data.length) {
+    //       wx.request({
+    //         url: that.globalData.url + '/getMessage/getAllShop',
+    //         method: "post",
+    //         success: function (e) {
+    //           that.globalData.shopMessage = e.data
+    //           wx.setStorage({
+    //             key: 'shopMessage',
+    //             data: e.data,
+    //           })
+    //         }
+    //       })
+    //     }
+    //   },
+    //   fail: function () {
+    //     wx.request({
+    //       url: that.globalData.url + '/getMessage/getAllShop',
+    //       method: "post",
+    //       success: function (e) {
+    //         that.globalData.shopMessage = e.data
+    //         wx.setStorage({
+    //           key: 'shopMessage',
+    //           data: e.data,
+    //         })
+    //       }
+    //     })
+    //   }
+    // })
 
     /**
      * 获取轮播图
      */
     wx.request({
-      url: that.globalData.url + '/getMessage/getAllSwiperMessage',
+      url: that.globalData.url + '/wx/SwiperImages',
       method: "post",
       success: function (e) {
         that.globalData.swiperImages = e.data

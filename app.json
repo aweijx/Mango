@@ -8,14 +8,13 @@
     "pages/add/add",
     "pages/agreement/agreement",
     "pages/add_detail/add_detail",
-    "pages/shop/shop",
-    "pages/shop_detail/shop_detail",
     "pages/me/me",
     "pages/me_fabu/me_fabu",
     "pages/me_canyu/me_canyu",
     "pages/me_shoucang/me_shoucang",
     "pages/me_xiaoxi/me_xiaoxi",
-    "pages/me_about/me_about"
+    "pages/me_about/me_about",
+    "pages/test/test"
   ],
   "permission": {
     "scope.userLocation": {
@@ -44,10 +43,10 @@
         "selectedIconPath": "/images/tabBar/tianjia_active.png"
       },
       {
-        "pagePath": "pages/shop/shop",
-        "text": "商店",
-        "iconPath": "/images/tabBar/shangpin.png",
-        "selectedIconPath": "/images/tabBar/shangpin_active.png"
+        "pagePath": "pages/test/test",
+        "text": "测试",
+        "iconPath": "/images/tabBar/wode.png",
+        "selectedIconPath": "/images/tabBar/wode_active.png"
       },
       {
         "pagePath": "pages/me/me",
@@ -55,6 +54,7 @@
         "iconPath": "/images/tabBar/wode.png",
         "selectedIconPath": "/images/tabBar/wode_active.png"
       }
+      
     ]
   },
   "requiredBackgroundModes": [
