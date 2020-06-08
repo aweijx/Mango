@@ -116,8 +116,26 @@ Page({
         var code = res.code;
         // 调用后端，获取微信的session_key, secret
         //var d = that.globalData;
+        var appId = 'wx12063e8256b4e57f';
+        var secret = 'def506697c00c52eee357a377cf0f440';
         wx.request({
-          url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + 'wx12063e8256b4e57f' + '&secret=' + 'def506697c00c52eee357a377cf0f440' + '&js_code=' + code + '&grant_type=authorization_code',
+          url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appId + '&secret=' + secret + '&js_code=' + code + '&grant_type=authorization_code',
+          data: {},
+          header: {
+            'content-type': 'json'
+          },
+          success: function (res) {
+            var openid = res.data.openid //返回openid
+            console.log('openid为' + openid);
+            wx.setStorage({
+              key: 'userId',
+              data: openid,
+            })
+            getApp().globalData.userId = openid
+          }
+        })
+        wx.request({
+          url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appId + '&secret=' + secret + '&js_code=' + code + '&grant_type=authorization_code',
           method: "GET",
           data: JSON.stringify(listMessage),
           dataType: JSON,
@@ -135,15 +153,11 @@ Page({
               message: JSON.parse(result.data),
               userInfo: list,
             })
-            wx.setStorage({
-              key: 'userId',
-              data: that.data.message.userId,
-            })
+            
             wx.setStorage({
               key: 'userInfo',
               data: list,
             })
-            getApp().globalData.userId = that.data.message.userId
             getApp().globalData.userInfo = list
 
             if (that.data.message.code === 200) {
@@ -200,11 +214,11 @@ Page({
         if (e.confirm) {
           wx.showModal({
             title: '提示',
-            content: '是否联系(18996379281)',
+            content: '是否联系(17608844790)',
             success: function(e) {
               if (e.confirm) {
                 wx.makePhoneCall({
-                  phoneNumber: '18996379281',
+                  phoneNumber: '17608844790',
                 })
               }
             }
@@ -212,12 +226,12 @@ Page({
         } else {
           wx.showModal({
             title: '提示',
-            content: '微信号：18996379281',
+            content: '微信号：cwhhsmb',
             confirmText: "复制",
             success: function(e) {
               if (e.confirm) {
                 wx.setClipboardData({
-                  data: '18996379281',
+                  data: 'cwhhsmb',
                 })
               }
             }

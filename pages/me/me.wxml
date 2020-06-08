@@ -62,10 +62,7 @@
         <text class="iconfont icon-follow"></text>
         <text style="margin-left:10rpx;">关注我们</text>
       </view>
-      <view>
-        <text class="iconfont icon-kefu"></text>
-        <button open-type="contact">我的客服</button>
-      </view>
+
     </view>
     <view class="me_operation">
       <navigator url="/pages/agreement/agreement">

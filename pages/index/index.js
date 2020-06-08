@@ -8,22 +8,20 @@ Page({
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
     currentIndex: 0,
-    swiper_images: [
-      {
-        "id":"1",
-        "img":"../../images/other/swiper_images_1.png"
-      },
-      {
-        "id":"2",
-        "img":"../../images/other/swiper_images_2.png"
-      }
-    ],
+    a1src:'../../images/other/shiwuzhaoling.png',
+    a2src: '../../images/other/xuexi.png',
+    a3src: '../../images/other/lanqiu.png',
+    a4src: '../../images/other/xiaoyuanzulin.png',
     allCategoryMessage: [],
     weatherData: null,
     floorstatus: "none",
     category_first: [],
     category_second: [],
-    notice: [],
+    notice: 
+      [
+        "欢迎来到云大妙妙屋，快去发布消息吧！",
+        "如果有问题，请在我的界面联系我们哟！"
+      ],
     lost_new: {},
     takeout: [],
     ad_bottom: ["../../images/other/ad_bottom.jpg"],
@@ -43,55 +41,59 @@ Page({
 
   },
 
-  /**
-   * 联系我
-   */
-  me_call() {
-    wx.showModal({
-      title: '提示',
-      content: '如有需要请联系我',
-      confirmText: "联系我",
-      success: function(e) {
-        if (e.confirm) {
-          wx.makePhoneCall({
-            phoneNumber: '',
-          })
-        }
-      }
-    })
-  },
-  //查看失物招领详情
-  lookLostMessage(e) {
-    wx.showModal({
-      title: '失物招领',
-      content: e.target.id,
-      showCancel: false,
-      confirmText: '已查阅'
-    })
-  },
-  //商家查看
-  to_shop(e) {
-    wx.navigateTo({
-      url: "/pages/shop_detail/shop_detail?shopId=" + e.target.id
-    })
-  },
-  //查看最新的失物招领
-  new_lost_look(e) {
-    wx.navigateTo({
-      url: "/pages/message_detail/message_detail?messageId=" + e.currentTarget.id
-    })
-  },
-  //点击查看图片
-  look_image(e) {
+  // /**
+  //  * 联系我
+  //  */
+  // me_call() {
+  //   wx.showModal({
+  //     title: '提示',
+  //     content: '如有需要请联系我',
+  //     confirmText: "联系我",
+  //     success: function(e) {
+  //       if (e.confirm) {
+  //         wx.makePhoneCall({
+  //           phoneNumber: '',
+  //         })
+  //       }
+  //     }
+  //   })
+  // },
+  // //查看失物招领详情
+  // lookLostMessage(e) {
+  //   wx.showModal({
+  //     title: '失物招领',
+  //     content: e.target.id,
+  //     showCancel: false,
+  //     confirmText: '已查阅'
+  //   })
+  // },
+  // //商家查看
+  // to_shop(e) {
+  //   wx.navigateTo({
+  //     url: "/pages/shop_detail/shop_detail?shopId=" + e.target.id
+  //   })
+  // },
+  // //查看最新的失物招领
+  // new_lost_look(e) {
+  //   wx.navigateTo({
+  //     url: "/pages/message_detail/message_detail?messageId=" + e.currentTarget.id
+  //   })
+  // },
+  //预览图片
+  previewImg: function (e) {
+    var currentUrl = e.currentTarget.dataset.currenturl
+    var previewUrls = e.currentTarget.dataset.previewurl
     wx.previewImage({
-      urls: [e.target.id],
-    });
+      current: currentUrl, //必须是http图片，本地图片无效
+      urls: previewUrls, //必须是http图片，本地图片无效
+    })
   },
   //查看公告
   checkNotice(e) {
+    var index = e.currentTarget.dataset.index
     wx.showModal({
       title: '公告',
-      content: e.target.id,
+      content: this.data.notice[index],
       showCancel: false,
       confirmText: '已查阅'
     })
@@ -179,14 +181,20 @@ Page({
   onLoad: function(options) {
 
     let that = this
+    var picList = []
+    picList.push("http://124.70.144.48/swiper_2.png")
+    picList.push("http://124.70.144.48/swiper_1.png")
+    that.setData({
+      picList: picList,
+    })
     //this.getWeather();
     /**
      * 商家服务
      */
-    this.setData({
-      takeout: getApp().globalData.shopMessage,
-      imageUrl:getApp().globalData.imageUrl,
-    })
+    // this.setData({
+    //   takeout: getApp().globalData.shopMessage,
+    //   imageUrl:getApp().globalData.imageUrl,
+    // })
 
     /**
      * 轮播图
@@ -211,9 +219,7 @@ Page({
     /**
      * 公告信息
      */
-    this.setData({
-      notice: getApp().globalData.noticeMessage
-    })
+
     /**
      *第一页最新信息
      */

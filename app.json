@@ -13,8 +13,7 @@
     "pages/me_canyu/me_canyu",
     "pages/me_shoucang/me_shoucang",
     "pages/me_xiaoxi/me_xiaoxi",
-    "pages/me_about/me_about",
-    "pages/test/test"
+    "pages/me_about/me_about"
   ],
   "permission": {
     "scope.userLocation": {
@@ -43,18 +42,11 @@
         "selectedIconPath": "/images/tabBar/tianjia_active.png"
       },
       {
-        "pagePath": "pages/test/test",
-        "text": "测试",
-        "iconPath": "/images/tabBar/wode.png",
-        "selectedIconPath": "/images/tabBar/wode_active.png"
-      },
-      {
         "pagePath": "pages/me/me",
         "text": "我的",
         "iconPath": "/images/tabBar/wode.png",
         "selectedIconPath": "/images/tabBar/wode_active.png"
-      }
-      
+      }     
     ]
   },
   "requiredBackgroundModes": [

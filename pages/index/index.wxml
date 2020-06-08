@@ -18,44 +18,46 @@
   <view class='container' style="margin-top: {{height}}px">
     <view class="top">
       <swiper class="imageContainer" indicator-color="#fff" indicator-active-color="#f00" bindchange="handleImgChange" previous-margin="40rpx" next-margin="40rpx" indicator-dots circular autoplay>
-        <block wx:for="{{swiper_images}}" wx:key="index">
+        <block wx:for="{{picList}}" wx:key="index">
           <swiper-item class="item">
-            <image bindtap="look_image" id="{{item.id}}" class="itemImg {{currentIndex == index ? 'active': ''}}" src="{{item.img}}"></image>
+            <image bindtap="previewImg"  class="itemImg {{currentIndex == index ? 'active': ''}}" data-previewurl='{{picList}}'data-currenturl='{{item}}' src="{{item}}"></image>
           </swiper-item>
         </block>
       </swiper>
     </view>
-    <view class="top_category">
-      <swiper class="category_swiper" indicator-active-color="#f00" indicator-color="#fff" indicator-dots>
-        <swiper-item>
-          <view class="category">
-            <block wx:for="{{category_first}}" wx:key="{{index}}">
-              <view class="category_item">
-                <view class="category_image">
-                  <navigator url="/pages/category/category?categoryId={{item.categoryId}}&categoryName={{item.categoryName}}">
-                    <image src="{{item.categoryImage}}" mode="widthFix" />
-                  </navigator>
-                </view>
-                <view class="category_title">{{item.categoryName}}</view>
-              </view>
-            </block>
+    <view class="plate">
+      <navigator url="/pages/lost_found/lost_found" open-type="switchTab" hover-class="other-navigator-hover" class="plate-item">
+        <view class="plate-img">
+          <image src="{{a1src}}"></image>
           </view>
-        </swiper-item>
-        <swiper-item>
-          <view class="category">
-            <block wx:for="{{category_second}}" wx:key="{{index}}">
-              <view class="category_item">
-                <view class="category_image" style="display:{{item.categoryImage==null?'none':'block'}}">
-                  <navigator url="/pages/category/category?categoryId={{item.categoryId}}&categoryName={{item.categoryName}}">
-                    <image src="{{item.categoryImage}}" mode="widthFix" />
-                  </navigator>
-                </view>
-                <view class="category_title">{{item.categoryName}}</view>
-              </view>
-            </block>
+          <text class="plate-info">
+          失物招领
+          </text>
+      </navigator>
+      <navigator url="/pages/learning/learning" open-type="switchTab" hover-class="other-navigator-hover" class="plate-item">
+        <view class="plate-img">
+          <image src="{{a2src}}"></image>
           </view>
-        </swiper-item>
-      </swiper>
+          <text class="plate-info">
+          相约学习
+          </text>
+      </navigator>
+      <navigator url="/pages/basketball/basketball" hover-class="navigator-hover" class="plate-item">
+        <view class="plate-img">
+          <image src="{{a3src}}"></image>
+          </view>
+          <text class="plate-info">
+          约个球
+          </text>
+      </navigator>
+      <navigator url="/pages/xianyu/xianyu" hover-class="navigator-hover" class="plate-item">
+        <view class="plate-img">
+          <image src="{{a4src}}"></image>
+          </view>
+          <text class="plate-info">
+          闲置交易
+          </text>
+      </navigator>
     </view>
     <view class="top_notice">
       <view class="notice_title">
@@ -63,7 +65,7 @@
       </view>
       <swiper class="swiper_notice" circular vertical autoplay>
         <block wx:for="{{notice}}" wx:key="{{index}}">
-          <swiper-item id="{{item.noticeDetail}}" bindtap="checkNotice">{{item.noticeDetail}}</swiper-item>
+          <swiper-item  bindtap="checkNotice" data-index="{{index}}">{{item}}</swiper-item>
         </block>
       </swiper>
     </view>

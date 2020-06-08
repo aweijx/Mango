@@ -12,10 +12,9 @@ App({
     shopMessage: [],
     swiperImages: [],
     categoryMessage: [],
-    noticeMessage: [],
+    // noticeMessage: [],
     messageDetail: [],
     isUpdate: -1,
-    testoutput:"no",
   },
   onLaunch: function (options) {
 
@@ -132,13 +131,13 @@ App({
     /**
      * 获取公告
      */
-    wx.request({
-      url: that.globalData.url + '/getMessage/getAllNoticeMessage',
-      method: "post",
-      success: function (e) {
-        that.globalData.noticeMessage = e.data
-      }
-    })
+    // wx.request({
+    //   url: that.globalData.url + '/getMessage/getAllNoticeMessage',
+    //   method: "post",
+    //   success: function (e) {
+    //     that.globalData.noticeMessage = e.data
+    //   }
+    // })
 
     /**
      * 获取最新第一页消息
