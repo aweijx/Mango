@@ -5,13 +5,18 @@ App({
     share: false, // 分享默认为false
     height: 0,
     url: "http://124.70.144.48",
-    imageUrl: "https://124.70.144.48:8080/",//这是你的oss地址,用来展示图片,后面加斜杠
+    imageUrl: "http://124.70.144.48/",//这是你的oss地址,用来展示图片,后面加斜杠
     userId: "-1",
     userInfo: {},
     userIsAdmin: -1,
     shopMessage: [],
-    swiperImages: [],
+    swiperImages: ['http://124.70.144.48/swiper_2.png','http://124.70.144.48/swiper_1.png'],
     categoryMessage: [],
+    categoryid: [1,2,3,4],
+    categoryname: ["失物招领","相约学习","约个球","闲置交易"],
+    categoryurl: ['add_found_info','add_study_info'],
+    querycategoryurl: ['query_found_info','query_study_info'],
+    alluserInfo: [],
     // noticeMessage: [],
     messageDetail: [],
     isUpdate: -1,
@@ -58,6 +63,36 @@ App({
       },
     })
     /**
+     * 获取所有用户信息
+     */
+    wx.getStorage({
+      key: 'alluserInfo',
+      success: function(res){
+        that.globalData.alluserInfo = res.data
+        if(that.globalData.alluserInfo.length != res.data.length){
+          wx.request({
+            url: that.globalData.url+'/query_user_info',
+            method : "POST",
+            data:{
+              "condition" : '',
+              "value" : '',
+            },
+            header:{
+              "content-type" : "application/x-www-form-urlencoded",
+              "chartset" : "utf-8",
+            },
+            success: function(res){
+              that.globalData.alluserInfo = res.data
+              wx.getStorage({
+                key: 'alluserInfo',
+                data: res.data,
+              })
+            }
+          })
+        }
+      }
+    })
+    /**
      * 获取商店
      */
     // wx.getStorage({
@@ -96,13 +131,13 @@ App({
     /**
      * 获取轮播图
      */
-    wx.request({
-      url: that.globalData.url + '/wx/SwiperImages',
-      method: "post",
-      success: function (e) {
-        that.globalData.swiperImages = e.data
-      }
-    })
+    // wx.request({
+    //   url: that.globalData.url + '/wx/SwiperImages',
+    //   method: "post",
+    //   success: function (e) {
+    //     that.globalData.swiperImages = e.data
+    //   }
+    // })
 
     /**
      * 获取分类

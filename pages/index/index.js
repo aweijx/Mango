@@ -15,15 +15,15 @@ Page({
     allCategoryMessage: [],
     weatherData: null,
     floorstatus: "none",
-    category_first: [],
-    category_second: [],
+    categoryid: [1,2,3,4],
+    categoryname: ["失物招领","相约学习","约个球","闲置交易"],
     notice: 
       [
         "欢迎来到云大妙妙屋，快去发布消息吧！",
         "如果有问题，请在我的界面联系我们哟！"
       ],
-    lost_new: {},
-    takeout: [],
+    //lost_new: {},
+    //takeout: [],
     ad_bottom: ["../../images/other/ad_bottom.jpg"],
     user_message: [],
     activeIndex: 1,
@@ -178,8 +178,12 @@ Page({
   //   });
   // },
 
+ 
   onLoad: function(options) {
 
+  /*
+    设置轮播图，可能影响加载速度
+  */
     let that = this
     var picList = []
     picList.push("http://124.70.144.48/swiper_2.png")
@@ -208,14 +212,14 @@ Page({
     this.setData({
       allCategoryMessage: getApp().globalData.categoryMessage
     })
-    var get_first = getApp().globalData.categoryMessage.slice(0, 10);
-    var tem = [{}, {}, {}, {}, {}]
-    var get_second = getApp().globalData.categoryMessage.slice(10, 13).concat(tem)
-    this.setData({
-      category_first: get_first,
-      category_second: get_second,
-      category_second: get_second
-    })
+    // var get_first = getApp().globalData.categoryMessage.slice(0, 10);
+    // var tem = [{}, {}, {}, {}, {}]
+    // var get_second = getApp().globalData.categoryMessage.slice(10, 13).concat(tem)
+    // this.setData({
+    //   category_first: get_first,
+    //   category_second: get_second,
+    //   category_second: get_second
+    // })
     /**
      * 公告信息
      */
@@ -229,9 +233,9 @@ Page({
     /**
      * 获取最新失物招领
      */
-    this.setData({
-      lost_new: getApp().globalData.lost_new
-    })
+    // this.setData({
+    //   lost_new: getApp().globalData.lost_new
+    // })
 
   },
   handleImgChange: function(e) {
@@ -338,6 +342,17 @@ Page({
       getApp().globalData.isUpdate = -1
     }
 
+  },
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function() {
+    return {
+      title: "云大妙妙屋，你的校园专属助手",
+      imageUrl: "../../images/other/logo.png"
+    }
+
   }
 
+  
 })

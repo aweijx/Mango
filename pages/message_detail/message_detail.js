@@ -27,7 +27,10 @@ Page({
     receiveUserId: -1,
     commentUserId: -1,
     messageDetail: {},
+    user_reply: [],
+    user_comment: [],
     isCollection: false,
+    attentionsize: 0, 
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
     isLoading: false //页面是否渲染完毕
@@ -310,9 +313,18 @@ Page({
       title: '稍等噢~',
     })
     wx.request({
-      url: getApp().globalData.url + '/addCommentReply/' + that.data.messageDetail.messageId,
-      method: "post",
-      data: list,
+      //url: getApp().globalData.url + '/addCommentReply/' + that.data.messageDetail.messageId,
+      url: 'http://124.70.144.48:8080/add_mesage',
+      method: "POST",
+      data:{
+        "openid": that.data.userId,
+        "object_id": that.data.messageDetail.OBJECT_ID,
+        "msg": that.data.comment_reply,
+      },
+      header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+      },
       success: function(e) {
         wx.hideLoading()
         if (e.statusCode != 200) {
@@ -323,20 +335,29 @@ Page({
           return;
         }
 
-        if (e.data.code == 200) {
+        if (e.statusCode == 200) {
           wx.showModal({
             title: '提示',
             content: '回复成功~',
             success: function() {
               wx.request({
-                url: getApp().globalData.url + '/getMessageDetailById/' + that.data.messageDetail.messageId,
-                method: "post",
+                //url: getApp().globalData.url + '/getMessageDetailById/' + that.data.messageDetail.messageId,
+                url: 'http://124.70.144.48:8080/query_mesage_by_obj',
+                method: "POST",
+                data:{
+                  "object_id": that.data.messageDetail.OBJECT_ID,
+                },
+                header:{
+                  "content-type" : "application/x-www-form-urlencoded",
+                  "chartset" : "utf-8",
+                },
                 success: function(e) {
                   that.setData({
                     comment_reply: "",
-                    messageDetail: e.data,
+                    user_reply: e.data.result,
 
                   })
+                  console.log(e.data.result)
                 }
               })
             }
@@ -402,9 +423,18 @@ Page({
     })
 
     wx.request({
-      url: getApp().globalData.url + '/addCommentReply/' + that.data.messageDetail.messageId,
-      method: "post",
-      data: list,
+      //url: getApp().globalData.url + '/addCommentReply/' + that.data.messageDetail.messageId,
+      url: 'http://124.70.144.48:8080/add_mesage',
+      method: "POST",
+      data:{
+        "openid": that.data.userId,
+        "object_id": that.data.messageDetail.OBJECT_ID,
+        "msg": that.data.comment_reply,
+      },
+      header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+      },
       success: function(e) {
         wx.hideLoading()
         if (e.statusCode != 200) {
@@ -414,19 +444,27 @@ Page({
           })
           return;
         }
-        if (e.data.code == 200) {
+        if (e.statusCode == 200) {
           wx.showModal({
             title: '提示',
             content: '回复成功~',
             success: function() {
 
               wx.request({
-                url: getApp().globalData.url + '/getMessageDetailById/' + that.data.messageDetail.messageId,
-                method: "post",
+                //url: getApp().globalData.url + '/getMessageDetailById/' + that.data.messageDetail.messageId,
+                url: 'http://124.70.144.48:8080/query_mesage_by_obj',
+                method: "POST",
+                data:{
+                  "object_id": that.data.messageDetail.OBJECT_ID,
+                },
+                header:{
+                  "content-type" : "application/x-www-form-urlencoded",
+                  "chartset" : "utf-8",
+                },
                 success: function(e) {
                   that.setData({
                     comment_reply: "",
-                    messageDetail: e.data,
+                    user_reply: e.data.result,
                   })
                 }
               })
@@ -487,9 +525,18 @@ Page({
       title: '稍等噢~',
     })
     wx.request({
-      url: getApp().globalData.url + '/addComment/' + that.data.userId + '/' + that.data.messageDetail.messageId + '/' + that.data.messageDetail.userId,
-      method: "post",
-      data: that.data.comment_input,
+      //url: getApp().globalData.url + '/addComment/' + that.data.userId + '/' + that.data.messageDetail.messageId + '/' + that.data.messageDetail.userId,
+      url: 'http://124.70.144.48:8080/add_mesage',
+      method: "POST",
+      data:{
+        "openid": that.data.userId,
+        "object_id": that.data.messageDetail.OBJECT_ID,
+        "msg": that.data.comment_input,
+      },
+      header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+      },
       success: function(e) {
         wx.hideLoading()
         if (e.statusCode != 200) {
@@ -499,7 +546,7 @@ Page({
           })
           return;
         }
-        if (e.data.code == 200) {
+        if (e.statusCode == 200) {
 
           wx.showModal({
             title: '提示',
@@ -507,12 +554,20 @@ Page({
             showCancel: false,
             success: function() {
               wx.request({
-                url: getApp().globalData.url + '/getMessageDetailById/' + that.data.messageDetail.messageId,
-                method: "post",
+                //url: getApp().globalData.url + '/getMessageDetailById/' + that.data.messageDetail.messageId,
+                url: 'http://124.70.144.48:8080/query_mesage_by_obj',
+                method: "POST",
+                data:{
+                  "object_id": that.data.messageDetail.OBJECT_ID,
+                },
+                header:{
+                  "content-type" : "application/x-www-form-urlencoded",
+                  "chartset" : "utf-8",
+                },
                 success: function(e) {
                   that.setData({
                     comment_input: "",
-                    messageDetail: e.data,
+                    user_comment: e.data.result,
 
                   })
                 }
@@ -652,7 +707,7 @@ Page({
       return
     }
 
-    if (that.data.messageDetail.userIdAnonymity == 1) {
+    if (that.data.messageDetail.NICK_NAME == "匿名者") {
       wx.showModal({
         title: '提示',
         content: '匿名信息无法收藏',
@@ -662,13 +717,22 @@ Page({
 
     if (that.data.isCollection) {
       wx.request({
-        url: getApp().globalData.url + '/deleteCollection/' + that.data.userId + '/' + that.data.messageDetail.messageId,
-        method: "post",
+        //url: getApp().globalData.url + '/deleteCollection/' + that.data.userId + '/' + that.data.messageDetail.messageId,
+        url: 'http://124.70.144.48:8080/del_attention',
+        method: "POST",
+        data:{
+        "openid": getApp().globalData.userId,
+        "object_id": that.data.messageDetail.OBJECT_ID,
+        },
+       header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+       },
         success: function(e) {
           if (e.statusCode != 200) {
             return
           }
-          if (e.data == 200) {
+          if (e.statusCode == 200) {
             that.setData({
               isCollection: false
             })
@@ -678,14 +742,23 @@ Page({
       })
     } else {
       wx.request({
-        url: getApp().globalData.url + '/addCollection/' + that.data.userId + '/' + that.data.messageDetail.messageId,
-        method: "post",
+        //url: getApp().globalData.url + '/add_attention/' + that.data.userId + '/' + that.data.messageDetail.messageId,
+        url: 'http://124.70.144.48:8080/add_attention',
+        method: "POST",
+        data:{
+        "openid": getApp().globalData.userId,
+        "object_id": that.data.messageDetail.OBJECT_ID,
+        },
+        header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+        },
         success: function(e) {
 
           if (e.statusCode != 200) {
             return
           }
-          if (e.data.code == 200) {
+          if (e.statusCode == 200) {
             that.setData({
               isCollection: true
             })
@@ -733,7 +806,7 @@ Page({
       commentUserId: e.target.id,
     });
   },
-
+  
   onLoad(options) {
     let that = this;
     this.setData({
@@ -768,10 +841,19 @@ Page({
       userId: getApp().globalData.userId
     })
 
-
+    var categoryname = options.messageId.slice(0,5);//取object_id前五个元素看是哪个类型
+    let indexurl = categoryname=="found"?'query_found_info':'query_study_info';
     wx.request({
-      url: getApp().globalData.url + '/getMessageDetailById/' + options.messageId,
-      method: "post",
+      url: 'http://124.70.144.48:8080/' + indexurl,
+      method: "POST",
+      data:{
+        "condition": 'object_id',
+        "value": options.messageId,
+      },
+      header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+      },
       success: function(e) {
         if (e.statusCode != 200) {
           wx.showModal({
@@ -780,7 +862,7 @@ Page({
           })
           return
         }
-
+        
         if (e.data == "" || e.data == null) {
           wx.showModal({
             title: '提示',
@@ -795,8 +877,9 @@ Page({
           })
           return
         }
+        console.log(e.data.result[0])
         that.setData({
-          messageDetail: e.data
+          messageDetail: e.data.result[0]        
         })
       },
       complete: function() {
@@ -814,30 +897,80 @@ Page({
     }
 
     wx.request({
-      url: getApp().globalData.url + '/addCollection/checkIsCollection/' + that.data.userId + '/' + options.messageId,
-      method: "post",
+      //url: getApp().globalData.url + '/addCollection/checkIsCollection/' + that.data.userId + '/' + options.messageId,
+      url: 'http://124.70.144.48:8080/query_lost_found_attention_one',
+      method: "POST",
+      data:{
+        "openid": getApp().globalData.userId,
+        "object_id": options.messageId,
+      },
+      header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+      },
       success: function(e) {
         if (e.statusCode != 200) {
           return
         }
-        if (e.data == 1) {
+        if (e.data.result == 1) {
           that.setData({
             isCollection: true
           })
         }
       }
     })
-
-  },
-  share_message() {
-
-    let that = this;
+    /*
+    获取留言信息
+    */
     wx.request({
-      url: getApp().globalData.url + '/share/addShareCount/' + that.data.messageDetail.messageId,
-      method: "post",
-      success: function(e) {}
+      //url: getApp().globalData.url + '/getMessageDetailById/' + that.data.messageDetail.messageId,
+      url: 'http://124.70.144.48:8080/query_mesage_by_obj',
+      method: "POST",
+      data:{
+        "object_id": options.messageId,
+      },
+      header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+      },
+      success: function(e) {
+        that.setData({
+          //comment_input: "",
+          user_comment: e.data.result,
+        })
+      }
+    })
+    /*
+  获取关注数
+  */
+    wx.request({
+      //url: getApp().globalData.url + '/share/addShareCount/' + that.data.messageDetail.messageId,
+      url: 'http://124.70.144.48:8080/query_attention_obj_size',
+      method: "POST",
+      data:{
+        "object_id": options.messageId,
+      },
+      header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+      },
+      success: function(e) {
+        if (e.statusCode != 200) {
+          return
+        }
+        if (e.statusCode == 200) {
+          that.setData({
+            attentionsize: e.data.result
+          })
+        }
+      }
     })
   },
+
+  /**
+   *更新转发信息
+   * /
+  
   /**
   更新留言信息 */
   comment_input(e) {

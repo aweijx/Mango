@@ -1,8 +1,8 @@
 //index.js
 //获取应用实例
 const app = getApp()
-var uploadImage = require('../../utils/uploadFile.js');
-var util = require('../../utils/util.js');
+//var uploadImage = require('../../utils/uploadFile.js');
+//var util = require('../../utils/util.js');
 
 
 Page({
@@ -17,17 +17,20 @@ Page({
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
     result_image_url: [],
+    img_list: [],
     img_url: [],
     hideAdd: false,
     array: [],
     category_index:  null,
-
+    categoryurl: [],
     input_intro: "",
     input_phone: "",
     input_level: "",
     input_major: "",
     input_anonymity: false,
 
+    input_obj_name: "",
+    input_obj_class: "",
   },
   input_intro: function(e) {
     let value = e.detail.value;
@@ -53,19 +56,33 @@ Page({
       input_major: value
     })
   },
+  input_obj_name: function(e) {
+    let value = e.detail.value;
+    this.setData({
+      input_obj_name: value
+    })
+  },
+  input_obj_class: function(e) {
+    let value = e.detail.value;
+    this.setData({
+      input_obj_class: value
+    })
+  },
 
   onLoad() {
     this.setData({
       height: app.globalData.height
     })
     var arrays = [];
-    for (var i = 0; i < getApp().globalData.categoryMessage.length; i++) {
-      arrays.push(getApp().globalData.categoryMessage[i].categoryName)
+    for (var i = 0; i < getApp().globalData.categoryid.length; i++) {
+      arrays.push(getApp().globalData.categoryname[i])
     }
     this.setData({
       array: arrays
     })
-
+    this.setData({
+      categoryurl: getApp().globalData.categoryurl
+    })
     this.setData({
       userId: getApp().globalData.userId
     })
@@ -166,12 +183,12 @@ Page({
   img_upload: function(res) {
     let that = this;
     let img_url = that.data.img_url;
-
+    let img_list = that.data.img_list;
     let images_url = [];
     //由于图片只能一张一张地上传，所以用循环
     for (let i = 0; i < img_url.length; i++) {
-      var tempFilePaths = img_url[i];
-      var nowTime = util.formatTime(new Date());
+      //var tempFilePaths = img_url[i];
+      //var nowTime = util.formatTime(new Date());
       //支持多图上传
       for (var i = 0; i < img_url.length; i++) {
         //显示消息提示框
@@ -179,23 +196,88 @@ Page({
           title: '上传中' + (i + 1) + '/' + img_url.length,
           mask: true
         })
-
+        console.log(img_url[i])
         //上传图片
         //你的域名下的/images/文件下的/当前年月日文件下的/图片.png
         //图片路径可自行修改
 
-        var path = 'images/' + nowTime + '/' + new Date().getTime() + Math.floor(Math.random() * 150) + '.png';
-        uploadImage(img_url[i], path,
-          function(result) {
-            console.log("======上传成功图片地址为：", result);
-            wx.hideLoading();
-          },
-          function(result) {
-            console.log("======上传失败======", result);
+        // var path = 'images/' + nowTime + '/' + new Date().getTime() + Math.floor(Math.random() * 150) + '.png';
+        // uploadImage(img_url[i], path,
+        //   function(result) {
+        //     console.log("======上传成功图片地址为：", result);
+        //     wx.hideLoading();
+        //   },
+        //   function(result) {
+        //     console.log("======上传失败======", result);
+        //     wx.hideLoading()
+        //   }
+        // )
+        wx.uploadFile({
+          filePath: img_url[i],
+          name: 'files',
+          url: 'http://124.70.144.48:8080/'+that.data.categoryurl[that.data.category_index],
+          formData: img_list,
+          success: e=> {
+            console.log(e.data)
+            images_url.push(img_url[i]);//多图实现需要
             wx.hideLoading()
+            if (e.statusCode != 200) {
+              wx.showModal({
+                title: '提示',
+                content: '服务器出现问题啦，请稍后再试~',
+              })
+              return;
+            }
+
+            if (e.statusCode == 200) {
+              wx.showModal({
+                title: '提示',
+                content: '发布成功',
+                showCancel: false,
+                success: function(res) {
+                  if (res.confirm) {
+                    wx.showLoading({
+                      title: '更新主页信息中~',
+                    })
+                    wx.request({
+                      url: getApp().globalData.url + '/getMessage/getAllMessageDetail/' + 1,
+                      method: "POST",
+                      success: (res) => {
+                        getApp().globalData.messageDetail = res.data
+                        /**
+                         * 获取最新失物招领
+                         */
+                        wx.request({
+                          url: getApp().globalData.url + '/getMessage/getLostMessage',
+                          method: "post",
+                          success: function(e) {
+                            getApp().globalData.lost_new = e.data
+                            wx.hideLoading();
+                          },
+                          complete: function() {
+                            getApp().globalData.isUpdate = 1
+                            wx.switchTab({
+                              url: '/pages/index/index',
+                            })
+                          }
+                        })
+                      },
+
+                    })
+                  }
+                }
+              })
+            }
+            if (e.data.code == 301) {
+              wx.showModal({
+                title: '提示',
+                content: '你已被管理员禁止发布，详情请联系管理员',
+                showCancel: false
+              })
+            }
           }
-        )
-        images_url.push(path);
+        })
+        
       }
 
       that.setData({
@@ -277,19 +359,44 @@ Page({
             title: '发布中~',
           })
 
-          that.img_upload();
+          
 
 
-          let list = {
-            "categoryId": new Number(that.data.category_index) + 1,
-            "userPhone": that.data.input_phone,
-            "userMajor": that.data.input_major,
-            "userLevel": that.data.input_level,
-            "messageDetail": that.data.input_intro,
-            "userIdAnonymity": that.data.input_anonymity ? "1" : "0",
-            "userId": that.data.userId,
-            "resultImage": that.data.result_image_url
+          let list = that.data.category_index==0?{// "categoryId": new Number(that.data.category_index) + 1,
+          // "userPhone": that.data.input_phone,
+          // "userMajor": that.data.input_major,
+          // "userLevel": that.data.input_level,
+          // "messageDetail": that.data.input_intro,
+          // "userIdAnonymity": that.data.input_anonymity ? "1" : "0",
+          // "userId": that.data.userId,
+          // "resultImage": that.data.result_image_url
+          openid: that.data.userId,
+          object_name : that.data.input_obj_name,
+          object_class : that.data.input_obj_class,
+          msg: that.data.input_intro,
+          phone: that.data.input_phone,
+          grade: that.data.input_level+"级",
+          major: that.data.input_major,
+          gender: getApp().globalData.userInfo.gender,
+          nick_name: that.data.input_anonymity?"匿名者":getApp().globalData.userInfo.nickName
+          }:{
+            // "categoryId": new Number(that.data.category_index) + 1,
+              // "userPhone": that.data.input_phone,
+              // "userMajor": that.data.input_major,
+              // "userLevel": that.data.input_level,
+              // "messageDetail": that.data.input_intro,
+              // "userIdAnonymity": that.data.input_anonymity ? "1" : "0",
+              // "userId": that.data.userId,
+              // "resultImage": that.data.result_image_url
+              openid: that.data.userId,
+              //obj_name : that.data.input_obj_name,
+              //obj_class : that.data.input_obj_class,
+              msg: that.data.input_intro
           }
+          that.setData({
+            img_list: list
+          })
+          
           if (that.data.userId == -1) {
             wx.showModal({
               title: '提示',
@@ -298,73 +405,86 @@ Page({
             return;
           }
 
-          wx.request({
-            url: getApp().globalData.url + '/addMessage/' + that.data.userId,
-            method: "post",
-            data: list,
-            success: function(e) {
-              wx.hideLoading()
-              if (e.statusCode != 200) {
-                wx.showModal({
-                  title: '提示',
-                  content: '服务器出现问题啦，请稍后再试~',
-                })
-                return;
-              }
-
-              if (e.data.code == 200) {
-                wx.showModal({
-                  title: '提示',
-                  content: '发布成功',
-                  showCancel: false,
-                  success: function(res) {
-                    if (res.confirm) {
-                      wx.showLoading({
-                        title: '更新主页信息中~',
-                      })
-                      wx.request({
-                        url: getApp().globalData.url + '/getMessage/getAllMessageDetail/' + 1,
-                        method: "POST",
-                        success: (res) => {
-                          getApp().globalData.messageDetail = res.data
-                          /**
-                           * 获取最新失物招领
-                           */
-                          wx.request({
-                            url: getApp().globalData.url + '/getMessage/getLostMessage',
-                            method: "post",
-                            success: function(e) {
-                              getApp().globalData.lost_new = e.data
-                              wx.hideLoading();
-                            },
-                            complete: function() {
-                              getApp().globalData.isUpdate = 1
-                              wx.switchTab({
-                                url: '/pages/index/index',
-                              })
-                            }
-                          })
-                        },
-
-                      })
+          if(that.data.img_url.length>0)
+          {
+            that.img_upload();
+          }         
+          else{
+            wx.request({
+              url: 'http://124.70.144.48:8080/'+that.data.categoryurl[that.data.category_index],
+              method: "POST",
+              data: list,
+              header:{
+                "content-type" : "application/x-www-form-urlencoded",
+                "chartset" : "utf-8",
+              },
+              success: e=> {
+                console.log(e.data)
+                wx.hideLoading()
+                if (e.statusCode != 200) {
+                  wx.showModal({
+                    title: '提示',
+                    content: '服务器出现问题啦，请稍后再试~',
+                  })
+                  return;
+                }
+  
+                if (e.statusCode == 200) {
+                  wx.showModal({
+                    title: '提示',
+                    content: '发布成功',
+                    showCancel: false,
+                    success: function(res) {
+                      if (res.confirm) {
+                        wx.showLoading({
+                          title: '更新主页信息中~',
+                        })
+                        wx.request({
+                          url: getApp().globalData.url + '/getMessage/getAllMessageDetail/' + 1,
+                          method: "POST",
+                          success: (res) => {
+                            getApp().globalData.messageDetail = res.data
+                            /**
+                             * 获取最新失物招领
+                             */
+                            wx.request({
+                              url: getApp().globalData.url + '/getMessage/getLostMessage',
+                              method: "post",
+                              success: function(e) {
+                                getApp().globalData.lost_new = e.data
+                                wx.hideLoading();
+                              },
+                              complete: function() {
+                                getApp().globalData.isUpdate = 1
+                                wx.switchTab({
+                                  url: '/pages/index/index',
+                                })
+                              }
+                            })
+                          },
+  
+                        })
+                      }
                     }
-                  }
-                })
+                  })
+                }
+                if (e.data.code == 301) {
+                  wx.showModal({
+                    title: '提示',
+                    content: '你已被管理员禁止发布，详情请联系管理员',
+                    showCancel: false
+                  })
+                }
               }
-              if (e.data.code == 301) {
-                wx.showModal({
-                  title: '提示',
-                  content: '你已被管理员禁止发布，详情请联系管理员',
-                  showCancel: false
-                })
-              }
-            }
-          })
+            })
+          }
+          
         }
       }
     })
 
   },
+  //获取选定滑动框的索引
   bindPickerChange: function(e) {
     this.setData({
       category_index: e.detail.value

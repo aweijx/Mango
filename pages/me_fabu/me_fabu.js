@@ -52,9 +52,10 @@ Page({
       title: '更新中~',
     })
     wx.request({
-      url: getApp().globalData.url + '/updateMessageById/' + that.data.userId + '/' + that.data.user_message[that.data.currentIndex].messageId,
+      //url: getApp().globalData.url + '/updateMessageById/' + that.data.userId + '/' + that.data.user_message[that.data.currentIndex].messageId,
+      url: 'http://124.70.144.48:8080/query_lost_info?condition=openid&value='+that.globalData.userId,
       method: "post",
-      data: that.data.updateMessage,
+      data: '',
       success: function(e) {
         if (e.statusCode != 200) {
           wx.showModal({
@@ -64,7 +65,7 @@ Page({
           return;
         }
         wx.hideLoading()
-        if (e.data.code == 200) {
+        if (e.statusCode == 200) {   //改动e.data.code->e.statusCode
           wx.showModal({
             title: '提示~',
             content: '更新成功啦~',

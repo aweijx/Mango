@@ -68,7 +68,7 @@ Page({
    */
   onShareAppMessage: function() {
     return {
-      title: "芒果新生活，便利你的生活",
+      title: "云大妙妙屋，你的校园专属助手",
       imageUrl: "../../images/other/logo.png"
     }
 

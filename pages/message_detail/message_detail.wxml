@@ -18,28 +18,28 @@
       <view class="main_item">
         <view class="user_message">
           <view class="user_image" bindtap="admin">
-            <image src="{{messageDetail.userIdAnonymity==0?messageDetail.mangoUser.userAvatar:'../../images/other/hidden.jpg'}}" mode="widthFix" />
+            <image src='../../images/other/{{messageDetail.NICK_NAME!="匿名者"&&(messageDetail.GENDER=="male"||messageDetail.GENDER=="1")?"man":(messageDetail.NICK_NAME=="匿名者"?"hidden":"women")}}.png' mode="widthFix" />
           </view>
           <view class="user_detail">
             <view class="user_name">
-              <text>{{messageDetail.userIdAnonymity==0?messageDetail.mangoUser.userNickname:"匿名用户"}}</text>
+              <text>{{messageDetail.NICK_NAME!="匿名者"?messageDetail.NICK_NAME:"匿名用户"}}</text>
               <view>
                 <button bindtap="delete_message" style="font-size:28rpx;color:red;display:{{userIsAdmin==2?'block':messageDetail.userId==userId?'block':'none'}}">删除该文章</button>
               </view>
             </view>
             <view class="user_flag">
-              <view>{{messageDetail.messageCreatTime}} 发布 </view>
+              <view>{{messageDetail.DATE_TIME}} 发布 </view>
             </view>
           </view>
         </view>
       </view>
       <view class="main_middle">
         <view class="main_middle_intro">
-          <text selectable>{{messageDetail.messageDetail}}</text>
+          <text selectable>{{messageDetail.MSG}}</text>
         </view>
         <view class="main_middle_image">
-          <block wx:for="{{messageDetail.messageImages}}" wx:key="{{index}}">
-            <image bindtap="look_image" id="{{imageUrl}}{{item.imageUrl}}" src="{{imageUrl}}{{item.imageUrl}}" mode="widthFix" />
+          <block wx:if="{{messageDetail.IMG_URL}}" >
+            <image bindtap="look_image" id="{{imageUrl}}{{messageDetail.IMG_URL}}" src="{{imageUrl}}{{messageDetail.IMG_URL}}" mode="widthFix" />
           </block>
         </view>
       </view>
@@ -48,36 +48,37 @@
           <view class="main_bottom_operation_left">
             <view>
               <text class="iconfont icon-zhuanfa" style="margin-left:20rpx;color:#999;font-size:25rpx;">{{messageDetail.messageShare}}</text>
+              <text class="iconfont icon-shoucang" style="margin-left:50rpx;color:#999;font-size:25rpx;">{{attentionsize}}</text>
             </view>
           </view>
           <view class="main_bottom_operation_right">
-            <text class="iconfont icon-dianzan" style="margin-right:20rpx;color:#999;font-size:25rpx;">{{messageDetail.messageWatch}}</text>
+            <text class="iconfont icon-dianzan" style="margin-right:20rpx;color:#999;font-size:25rpx;">{{messageDetail.SEEN_CNT}}</text>
           </view>
         </view>
       </view>
       <view class="divide"></view>
       <view class="liuyan">
 
-        <block wx:for="{{messageDetail.comments}}" wx:key="{{index}}">
+        <block wx:for="{{user_comment}}" wx:key="{{index}}">
           <view class="liuyan_item">
             <view class="user_message">
               <view class="user_image">
-                <image src="{{item.mangoUser.userAvatar}}" mode="widthFix" />
+                <image src='../../images/other/hidden.png' mode="widthFix" />
               </view>
               <view class="user_detail">
                 <view class="user_name">
-                  <text>{{item.mangoUser.userNickname}}</text>
+                  <text>{{item.USER_ID}}</text>
                   <view>
                     <button bindtap="delete_comment" id="{{item.commentId}}" style="font-size:28rpx;color:red;display:{{userIsAdmin==2?'block':item.userId==userId?'block':'none'}}">删除</button>
                   </view>
                 </view>
                 <view class="user_flag">
-                  <view>{{item.commentCreatTime}}</view>
+                  <view>{{item.DATE_TIME}}</view>
                 </view>
               </view>
             </view>
-            <view class="liuyan_intro" data-name="{{item.mangoUser.userNickname}}" data-commentId="{{item.commentId}}" id="{{item.userId}}" bindtap="toggleDialog2">
-              {{item.commentDetail}}
+            <view class="liuyan_intro" data-name="{{item.USER_ID}}" data-commentId="{{item.USER_ID}}" id="{{item.USER_ID}}" bindtap="toggleDialog2">
+              {{item.MSG}}
             </view>
             <view class="have_message">
               <block wx:for="{{item.commentReplies}}" wx:for-item="replay" wx:key="{{index}}">
@@ -129,7 +130,7 @@
     <view class="zan-dialog__mask" bindtap="toggleDialog1" />
     <view class="zan-dialog__container">
       <view>
-        <textarea bindinput="comment_input" maxlength="150" value="{{comment_input}}" placeholder="留言给-{{messageDetail.userIdAnonymity==0?messageDetail.mangoUser.userNickname:'匿名用户'}}  (150字)" placeholder-style="color:rgba(0,0,0,{{ showDialog1 ? '0.5' : '0' }})"></textarea>
+        <textarea bindinput="comment_input" maxlength="150" value="{{comment_input}}" placeholder="留言给-{{messageDetail.NICK_NAME!='匿名者'?messageDetail.NICK_NAME:'匿名用户'}}  (不超过150字)" placeholder-style="color:rgba(0,0,0,{{ showDialog1 ? '0.5' : '0' }})"></textarea>
         <button type="primary" class="submit" bindtap="comment">留言</button>
       </view>
     </view>

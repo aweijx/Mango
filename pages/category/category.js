@@ -18,6 +18,7 @@ Page({
     activeIndex: 1,
     isLastPage: false, //是否最后一页
     categoryId: -1,
+    categoryName: "", //用于类别flag显示
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
     isLoading: false
@@ -71,7 +72,8 @@ Page({
     })
     this.setData({
       height: app.globalData.height,
-      categoryId: options.categoryId
+      categoryId: options.categoryId,
+      categoryName: options.categoryName
     })
     this.setData({
       nvabarData: {
@@ -81,25 +83,36 @@ Page({
       }
     })
     this.loadMessage(options.categoryId, 1)
-
+ v
   },
   loadMessage(categoryId, page) {
     let that = this;
 
     var app = getApp()
     wx.request({
-      url: getApp().globalData.url + '/getMessage/getAllMessageDetail/' + categoryId + '/' + page,
+      //url: getApp().globalData.url + '/getMessage/getAllMessageDetail/' + categoryId + '/' + page,
+      url: 'http://124.70.144.48:8080/'+getApp().globalData.querycategoryurl[categoryId],
       method: "POST",
+      data:{
+        "condition": 'date_time_after',
+        "value": '2020-06-04 00:50:58',
+      },
+      header:{
+        "content-type" : "application/x-www-form-urlencoded",
+        "chartset" : "utf-8",
+      },
       success: (res) => {
-        if (res.data == 200) {
-          that.setData({
-            isLastPage: true
-          })
-          return;
-        }
-        that.setData({
-          user_message: that.data.user_message.concat(res.data)
+        console.log(res)
+          if (page == 2) {
+            that.setData({
+              isLastPage: true
+            })
+            return;
+          }    
+        that.setData({          
+          user_message: that.data.user_message.concat(res.data.result)
         })
+        
       },
       complete: function(res) {
 

@@ -81,6 +81,10 @@
   background-color: cornflowerblue;
 }
 
+.flag_status{
+  background-color: rgb(209, 32, 32);
+}
+
 .user_image {
   display: flex;
   flex-direction: row;

@@ -26,7 +26,7 @@
       </swiper>
     </view>
     <view class="plate">
-      <navigator url="/pages/lost_found/lost_found" open-type="switchTab" hover-class="other-navigator-hover" class="plate-item">
+      <navigator url="/pages/category/category?categoryId={{categoryid[0]-1}}&categoryName={{categoryname[0]}}" hover-class="ui-share-hover" class="plate-item">
         <view class="plate-img">
           <image src="{{a1src}}"></image>
           </view>
@@ -34,7 +34,7 @@
           失物招领
           </text>
       </navigator>
-      <navigator url="/pages/learning/learning" open-type="switchTab" hover-class="other-navigator-hover" class="plate-item">
+      <navigator url="/pages/category/category?categoryId={{categoryid[1]}}&categoryName={{categoryname[1]}}"  hover-class="ui-share-hover" class="plate-item">
         <view class="plate-img">
           <image src="{{a2src}}"></image>
           </view>
@@ -42,7 +42,7 @@
           相约学习
           </text>
       </navigator>
-      <navigator url="/pages/basketball/basketball" hover-class="navigator-hover" class="plate-item">
+      <navigator url="/pages/category/category?categoryId={{categoryid[2]}}&categoryName={{categoryname[2]}}" hover-class="ui-share-hover" class="plate-item">
         <view class="plate-img">
           <image src="{{a3src}}"></image>
           </view>
@@ -50,7 +50,7 @@
           约个球
           </text>
       </navigator>
-      <navigator url="/pages/xianyu/xianyu" hover-class="navigator-hover" class="plate-item">
+      <navigator url="/pages/category/category?categoryId={{categoryid[3]}}&categoryName={{categoryname[3]}}" hover-class="ui-share-hover" class="plate-item">
         <view class="plate-img">
           <image src="{{a4src}}"></image>
           </view>

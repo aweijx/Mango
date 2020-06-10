@@ -14,6 +14,30 @@
     </view>
   </view>
 </view>
+<view class="bottom_item">
+  <view class="message_category">
+    <view class="phone_title">请选择分类：</view>
+    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+      <view class="phone">
+        {{(array[category_index]==null)?"请选择分类":"当前选择-"}}{{array[category_index]}}
+      </view>
+    </picker>
+  </view>
+</view>
+<view wx:if="{{category_index==0}}">
+  <view class="bottom_item">
+    <view class="message_user">
+      <view class="phone_title">物品名称：</view>
+      <input class="phone" placeholder="请输入丢失或捡到的物品名称" bindinput='input_obj_name' maxlength="20"></input>
+    </view>
+  </view>
+  <view class="bottom_item">
+    <view class="message_user">
+      <view class="phone_title">物品类别：</view>
+      <input class="phone" placeholder="请输入丢失或捡到的物品类别" bindinput='input_obj_class' maxlength="13"></input>
+    </view>
+  </view>
+</view>
 <view class="bottom">
   <view class="message_user">
     <view class="phone_title">联系方式：</view>
@@ -23,23 +47,13 @@
 <view class="bottom_item">
   <view class="message_user">
     <view class="phone_title">当前年级：</view>
-    <input class="phone" type="number" bindinput='input_level' placeholder="请输您的年级 (18)" maxlength="2"></input>
+    <input class="phone" type="number" bindinput='input_level' placeholder="请输您的年级 (18)级" maxlength="2"></input>
   </view>
 </view>
 <view class="bottom_item">
   <view class="message_user">
     <view class="phone_title">专业说明：</view>
     <input class="phone" placeholder="请输入您的专业" bindinput='input_major' maxlength="13"></input>
-  </view>
-</view>
-<view class="bottom_item">
-  <view class="message_category">
-    <view class="phone_title">请选择分类：</view>
-    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-      <view class="phone">
-        {{(array[category_index]==null)?"请选择分类":"当前选择-"}}{{array[category_index]}}
-      </view>
-    </picker>
   </view>
 </view>
 <view class="bottom">
